@@ -60,7 +60,7 @@ class OverlapWFC : MonoBehaviour{
 	void Awake(){}
 
 	void Start(){
-		Generate();
+		//Generate();
 	}
 
 	void Update(){
@@ -98,9 +98,13 @@ class OverlapWFC : MonoBehaviour{
         rendering = new GameObject[width, depth];
 		model = new OverlappingModel(training.sample, N, width, depth, periodicInput, periodicOutput, symmetry, foundation);
         undrawn = true;
+
+        
+		
+		
     }
 
-	void OnDrawGizmos(){
+    void OnDrawGizmos(){
 		Gizmos.color = Color.cyan;
 		Gizmos.matrix = transform.localToWorldMatrix;
 		Gizmos.DrawWireCube(new Vector3(width*gridsize/2f-gridsize*0.5f, depth*gridsize/2f-gridsize*0.5f, 0f),
@@ -114,6 +118,15 @@ class OverlapWFC : MonoBehaviour{
 			Draw();
 		}
 	}
+
+	public void AddColliders()
+	{
+        group.gameObject.AddComponent<Rigidbody2D>();
+        group.gameObject.AddComponent<CompositeCollider2D>();
+        group.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+		group.tag = "Ground";
+		group.gameObject.layer = 3;
+    }
 
 	public GameObject GetTile(int x, int y){
 		return rendering[x,y];
@@ -161,7 +174,7 @@ public class WFCGeneratorEditor : Editor {
 	public override void OnInspectorGUI () {
 		OverlapWFC generator = (OverlapWFC)target;
 		if (generator.training != null){
-			if(GUILayout.Button("generate")){
+			if(GUILayout.Button("\ngenerate\n")){
 				generator.Generate();
 			}
 			if (generator.model != null){
@@ -169,7 +182,11 @@ public class WFCGeneratorEditor : Editor {
 					generator.Run();
 				}
 			}
-		}
+            if (GUILayout.Button("\nAdd Colliders\n"))
+            {
+				generator.AddColliders();
+            }
+        }
 		DrawDefaultInspector ();
 	}
 }

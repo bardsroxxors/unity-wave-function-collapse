@@ -160,15 +160,16 @@ class OverlappingModel : Model
 	}
 
 
-
+	// This is used to get which tile is at a position
 	public byte Sample(int x, int y){
 		bool found = false;
 		byte res = (byte)99;
-		for (int t = 0; t < T; t++) if (wave[x + y * FMX][t]){
-			if (found) {return (byte)99;}
-			found = true;
-			res = patterns[t][0];
-		}
+		for (int t = 0; t < T; t++) 
+			if (wave[x + y * FMX][t]){
+				if (found) {return (byte)99;}
+				found = true;
+				res = patterns[t][0];
+			}
 		return res;
 	}
 
