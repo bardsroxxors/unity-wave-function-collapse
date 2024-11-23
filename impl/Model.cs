@@ -72,7 +72,9 @@ public abstract class Model
 	}
 
 	
-
+	// this gets one of the lowest entropy
+	// then picks a random possiblility and collaspses it
+	// by banning all other options
 	bool? Observe()
 	{
 		double min = 1E+3;
